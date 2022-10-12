@@ -1,1 +1,6 @@
-A central location for Houdini related Python Libraries
+# rbl_pipe_usd
+
+USD manipulation libs.
+
+## Licensing
+MIT Licensed.
