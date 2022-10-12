@@ -1,0 +1,72 @@
+#!/usr/bin/env hython
+
+"""Construct Shot USD Files."""
+
+import argparse
+
+from rbl_pipe_core.util import get_project
+
+from rbl_pipe_usd.build import shotusd
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Shot USD Builder")
+
+    parser.add_argument(
+        "shot_id", type=int, help="The shot ID to build the shot USD for."
+    )
+    parser.add_argument(
+        "-v",
+        dest="variant_name",
+        type=str,
+        default="main",
+        help="The variant name to build the shot USD for.",
+    )
+    parser.add_argument(
+        "-t",
+        dest="template",
+        type=str,
+        default="usd_shot_publish",
+        help="The template to use when creating USD references.",
+    )
+    parser.add_argument(
+        "-p",
+        dest="project",
+        type=str,
+        help="The project to use when creating USD references.",
+    )
+    parser.add_argument(
+        "-s",
+        dest="steps",
+        type=str,
+        help="A comma separated list of steps to use when constructing the shot USD.",
+    )
+    parser.add_argument(
+        "-f",
+        dest="force",
+        action="store_true",
+        help="Force the Asset USD publish even if one already exists.",
+    )
+
+    args = parser.parse_args()
+
+    if args.steps:
+        steps = args.steps.split(",")
+    else:
+        steps = None
+
+    project = args.project or get_project()
+
+    sg_script = "asset_shot_usd"
+    sg_key = "SHOTGRID_API_KEY"
+
+    shotusd.publish_shot_usd(
+        args.shot_id,
+        variant_name=args.variant_name,
+        sg_script=sg_script,
+        sg_key=sg_key,
+        template=args.template,
+        project=project,
+        steps=steps,
+        force_publish=args.force,
+    )

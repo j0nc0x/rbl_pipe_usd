@@ -1,0 +1,68 @@
+#!/usr/bin/env hython
+
+"""Construct Asset USD Files."""
+
+import argparse
+
+from rbl_pipe_core.util import get_project
+
+from rbl_pipe_usd.build import assetusd
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Asset USD Builder")
+
+    parser.add_argument(
+        "asset_id", type=int, help="The asset ID to build the asset USD for."
+    )
+    parser.add_argument(
+        "variant_name", type=str, help="The variant name to build the asset USD for."
+    )
+    parser.add_argument(
+        "-t",
+        dest="template",
+        type=str,
+        default="usd_asset_publish",
+        help="The template to use when creating USD references.",
+    )
+    parser.add_argument(
+        "-p",
+        dest="project",
+        type=str,
+        help="The project to use when creating USD references.",
+    )
+    parser.add_argument(
+        "-s",
+        dest="steps",
+        type=str,
+        help="A comma separated list of steps to use when constructing the asset USD.",
+    )
+    parser.add_argument(
+        "-f",
+        dest="force",
+        action="store_true",
+        help="Force the Asset USD publish even if one already exists.",
+    )
+
+    args = parser.parse_args()
+
+    if args.steps:
+        steps = args.steps.split(",")
+    else:
+        steps = None
+
+    project = args.project or get_project()
+
+    sg_script = "asset_shot_usd"
+    sg_key = "SHOTGRID_API_KEY"
+
+    assetusd.publish_asset_usd(
+        args.asset_id,
+        args.variant_name,
+        sg_script=sg_script,
+        sg_key=sg_key,
+        sg_template=args.template,
+        project=project,
+        steps=steps,
+        force_publish=args.force,
+    )
