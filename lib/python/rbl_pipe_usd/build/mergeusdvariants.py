@@ -77,7 +77,7 @@ class MergeUSDVariants(mergeusd.MergeUSD):
             sg_script(str): The SG script to use.
             sg_key(str): The SG key to use.
             project(str): The project to use when building the merged USD. If
-                one isn't provided the value of RBL_PROJECT will be used.
+                one is not provided the value of RBL_PROJECT will be used.
         """
         self.variants = variants
         self.step = "ASS"
