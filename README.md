@@ -1,2 +1,6 @@
-# rbl_pipe_usd
-Fork of rbl_pipe_usd
+# Fork of rbl_pipe_usd
+
+USD manipulation libs.
+
+## Licensing
+MIT Licensed.
